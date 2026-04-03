@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard | Student Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1e293b;
+        }
+
+        /* Dashboard layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .sidebar h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+            border-bottom: 2px solid #3b82f6;
+            display: inline-block;
+            width: 100%;
+            padding-bottom: 0.75rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .sidebar li {
+            padding: 0.85rem 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar li::before {
+            content: "→";
+            opacity: 0.7;
+            font-size: 1.1rem;
+        }
+
+        .sidebar li:hover {
+            background: #3b82f6;
+            transform: translateX(6px);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cards grid */
+        .cards {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .card-clickable {
+            flex: 1;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white;
+            padding: 1.8rem;
+            border-radius: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 8px 20px rgba(37,99,235,0.2);
+        }
+
+        .card-clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(37,99,235,0.3);
+        }
+
+        .card-clickable h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-clickable p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Output container */
+        .output-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .output-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+        }
+
+        /* Data table (matches admin style) */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: #f1f5f9;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eef2ff;
+            color: #334155;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .sidebar li {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+            .sidebar li::before {
+                display: none;
+            }
+            .cards {
+                flex-direction: column;
+            }
+        }
+
+        /* Message styling */
+        .welcome-message {
+            color: #64748b;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>👨‍👩‍👧 Parent</h2>
+        <ul>
+            <li onclick="loadDashboard()">Dashboard</li>
+            <li onclick="getGrades()">Child Grades</li>
+            <li onclick="getAttendance()">Child Attendance</li>
+            <li onclick="logout()">Logout</li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+             Parent Dashboard
+        </div>
+
+        <!-- QUICK ACTION CARDS -->
+        <div class="cards">
+            <div class="card-clickable" onclick="getGrades()">
+                <h3>📊 Grades</h3>
+                <p>View your child's academic performance</p>
+            </div>
+            <div class="card-clickable" onclick="getAttendance()">
+                <h3>📅 Attendance</h3>
+                <p>Check daily attendance records</p>
+            </div>
+        </div>
+
+        <!-- OUTPUT SECTION -->
+        <div class="output-card">
+            <h3> Information</h3>
+            <div id="output">
+                <p class="welcome-message">✨ Welcome! Click Dashboard, Grades, or Attendance to see data.</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/parent.js"></script>
+</body>
+</html>

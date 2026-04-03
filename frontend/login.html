@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Student Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 480px;
+            padding: 2rem 2rem 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .container h2 {
+            text-align: center;
+            color: #1e293b;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: #0f172a;
+            text-align: center;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            margin: 0.6rem 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: #f8fafc;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            background: white;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+            font-family: inherit;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .switch:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        #msg {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border-radius: 12px;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 1.5rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📚 Student Management</h2>
+
+    <!-- LOGIN (visible first) -->
+    <div id="loginBox">
+        <h3>Welcome Back</h3>
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login →</button>
+        <p class="switch" onclick="showRegister()">Create new account</p>
+    </div>
+
+    <!-- REGISTER (hidden initially) -->
+    <div id="registerBox" style="display:none;">
+        <h3>Create Account</h3>
+        <input type="text" id="r_name" placeholder="Full Name">
+        <input type="email" id="r_email" placeholder="Email Address">
+        <input type="password" id="r_password" placeholder="Password">
+        <select id="r_role">
+            <option value="student">👩‍🎓 Student</option>
+            <option value="teacher">👨‍🏫 Teacher</option>
+            <option value="parent">👪 Parent</option>
+            <option value="admin">⚙️ Admin</option>
+        </select>
+        <button onclick="register()">Register →</button>
+        <p class="switch" onclick="showLogin()">Already have an account? Login</p>
+    </div>
+
+    <div id="msg"></div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

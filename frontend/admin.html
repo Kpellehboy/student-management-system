@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Course Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2f;
+        }
+
+        /* Dashboard layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .sidebar h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: -0.5px;
+            border-bottom: 2px solid #3b82f6;
+            display: inline-block;
+            width: 100%;
+            padding-bottom: 0.75rem;
+        }
+
+        .sidebar button {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.85rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar button::before {
+            content: "→";
+            opacity: 0.7;
+            font-size: 1.1rem;
+        }
+
+        .sidebar button:hover {
+            background: #3b82f6;
+            transform: translateX(6px);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* Grid layout for forms + data */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+            border-left: 5px solid #3b82f6;
+            padding-left: 1rem;
+        }
+
+        /* Inputs */
+        input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            margin: 0.6rem 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+            background: white;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+            width: auto;
+            min-width: 120px;
+        }
+
+        button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        /* Data table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .data-table th {
+            background: #f1f5f9;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eef2ff;
+            color: #334155;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+            .sidebar button {
+                width: auto;
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+            .sidebar button::before {
+                display: none;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Utility */
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 16px;
+            background: #eef2ff;
+            color: #1e40af;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR (professional icons via pseudo-element) -->
+    <div class="sidebar">
+        <h3>⚙️ Admin Panel</h3>
+        <button onclick="showSection('createCourse')">Create Course</button>
+        <button onclick="showSection('assignTeacher')">Assign Teacher</button>
+        <button onclick="showSection('enrollStudent')">Enroll Student</button>
+        <button onclick="showSection('assignParent')">Assign Parent</button>
+        <button onclick="getStudents()">📋 View Students</button>
+        <button onclick="getTeachers()">👩‍🏫 View Teachers</button>
+        <button onclick="getCourses()">📚 View Courses</button>
+        <button onclick="logout()">🚪 Logout</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+        <div class="grid">
+
+            <!-- LEFT: FORMS -->
+            <div>
+                <!-- CREATE COURSE -->
+                <div id="createCourse" class="card">
+                    <h3>➕ Create Course</h3>
+                    <input id="course_name" placeholder="Course Name (e.g., Mathematics 101)">
+                    <button onclick="createCourse()">Create</button>
+                </div>
+
+                <!-- ASSIGN TEACHER -->
+                <div id="assignTeacher" class="card" style="display:none;">
+                    <h3>👨‍🏫 Assign Teacher</h3>
+                    <input id="teacher_id" placeholder="Teacher ID">
+                    <input id="course_id" placeholder="Course ID">
+                    <button onclick="assignTeacher()">Assign</button>
+                </div>
+
+                <!-- ENROLL STUDENT -->
+                <div id="enrollStudent" class="card" style="display:none;">
+                    <h3>📝 Enroll Student</h3>
+                    <input id="student_id" placeholder="Student ID">
+                    <input id="course_id2" placeholder="Course ID">
+                    <button onclick="enrollStudent()">Enroll</button>
+                </div>
+
+                <!-- ASSIGN PARENT -->
+                <div id="assignParent" class="card" style="display:none;">
+                    <h3>👪 Assign Parent</h3>
+                    <input id="student_id_p" placeholder="Student ID">
+                    <input id="parent_id" placeholder="Parent ID">
+                    <button onclick="assignParent()">Assign</button>
+                </div>
+            </div>
+
+            <!-- RIGHT: DATA OUTPUT -->
+            <div class="card" style="max-width: 100%;">
+                <h3>📊 Data</h3>
+                <div id="output">
+                    <p class="message">✨ Click any view button (Students, Teachers, Courses) to see records.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

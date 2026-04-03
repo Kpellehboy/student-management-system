@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Student Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            color: #1e293b;
+        }
+
+        /* Dashboard layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+
+        .sidebar h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+            border-bottom: 2px solid #3b82f6;
+            display: inline-block;
+            width: 100%;
+            padding-bottom: 0.75rem;
+        }
+
+        .sidebar button {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.85rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar button::before {
+            content: "→";
+            opacity: 0.7;
+            font-size: 1.1rem;
+        }
+
+        .sidebar button:hover {
+            background: #3b82f6;
+            transform: translateX(6px);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        /* Topbar */
+        .topbar {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0f172a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Cards grid */
+        .cards {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #64748b;
+        }
+
+        .card p {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        /* Table container */
+        .table-container {
+            margin-top: 1rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .data-table th {
+            background: #f1f5f9;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eef2ff;
+            color: #334155;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Grade colors */
+        .grade-a { color: #10b981; font-weight: bold; }
+        .grade-b { color: #3b82f6; font-weight: bold; }
+        .grade-c { color: #f59e0b; font-weight: bold; }
+        .grade-f { color: #ef4444; font-weight: bold; }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+            .sidebar button {
+                text-align: center;
+                justify-content: center;
+            }
+            .sidebar button::before {
+                display: none;
+            }
+            .cards {
+                flex-direction: column;
+            }
+        }
+
+        /* Message placeholder */
+        .placeholder {
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- SIDEBAR (IDs preserved for JS event listeners) -->
+    <div class="sidebar">
+        <h3>📚 Student</h3>
+        <button id="btnDashboard">Dashboard</button>
+        <button id="btnCourses">Courses</button>
+        <button id="btnGrades">Grades</button>
+        <button id="btnAttendance">Attendance</button>
+        <button id="btnDownloadPDF">Download PDF</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <!-- TOPBAR (dynamic info) -->
+        <div class="topbar" id="dashboardInfo">
+            Welcome Student 
+        </div>
+
+        <!-- STATS CARDS -->
+        <div class="cards">
+            <div class="card">
+                <h3>📖 Courses</h3>
+                <p id="courseCount">0</p>
+            </div>
+            <div class="card">
+                <h3>📅 Attendance %</h3>
+                <p id="attendancePercent">0%</p>
+            </div>
+        </div>
+
+        <!-- DETAILS SECTION -->
+        <div class="card full-width">
+            <h3> Details</h3>
+            <div id="output" class="table-container">
+                <p class="placeholder">✨ Select an option from the sidebar</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/student.js"></script>
+</body>
+</html>
