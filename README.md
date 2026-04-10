@@ -2,8 +2,17 @@
 
 ##  Overview
 
-This is a full-stack **Student Management System** built using **FastAPI (backend)** and **HTML, CSS, JavaScript (frontend)**.
-The system supports multiple roles: **Admin, Teacher, Student, and Parent**.
+A full-stack **Student Management System** built with **FastAPI (backend)** and **HTML, CSS, JavaScript (frontend)**.
+The system supports multiple user roles with **secure authentication**, **role-based access control**, and **cloud deployment**.
+
+Designed to simulate a real-world **university management portal**.
+
+---
+
+##  Live Demo
+
+* 🔗 Frontend: https://student-management-system-snowy-omega.vercel.app/
+* 🔗 Backend API: https://student-management-system-xge8.onrender.com/
 
 ---
 
@@ -11,64 +20,73 @@ The system supports multiple roles: **Admin, Teacher, Student, and Parent**.
 
 ###  Authentication
 
-* User Registration & Login (JWT-based)
-* Role-based access control
-  <img width="1366" height="697" alt="image" src="https://github.com/user-attachments/assets/9c89bc7a-8840-42a2-850b-6a359dccd3c7" />
-
-
-###  Admin
-
-* Create Courses
-* Assign Teachers to Courses
-* Enroll Students into Courses
-* Manage Students & Teachers
-  <img width="1366" height="696" alt="image" src="https://github.com/user-attachments/assets/59ae624f-a4e2-463f-9d76-54598052ccc9" />
-
-
-###  Teacher
-
-* View Students
-* Add Attendance
-* Add Grades
-* Create Assignments
-  <img width="1362" height="691" alt="image" src="https://github.com/user-attachments/assets/4d3da5ef-7c6c-428b-a2bb-be666ca21d2c" />
-
-
-###  Student
-
-* View Courses
-* View Grades
-* View Attendance
-* Download Grade Report (PDF)
-* Update Profile
-  <img width="1366" height="687" alt="image" src="https://github.com/user-attachments/assets/52fd0bfa-6bc5-41b1-8d4f-522553725896" />
-
-
-###  Parent
-
-* View Child Grades
-* View Child Attendance
-* Track Student Progress
-  <img width="1355" height="687" alt="image" src="https://github.com/user-attachments/assets/8b8c03f9-49ed-4986-9f04-f0d0bbc0b696" />
-
+* JWT-based login & registration
+* Secure password hashing
+* Role-based authorization (Admin, Teacher, Student, Parent)
 
 ---
 
-##  Tech Stack
+### 👨‍💼 Admin
 
-### Backend
+* Create and manage courses
+* Assign teachers to courses
+* Enroll students
+* Manage users (students & teachers)
+
+---
+
+### 👨‍🏫 Teacher
+
+* View assigned students
+* Mark attendance
+* Add grades
+* Create assignments
+
+---
+
+### 🎓 Student
+
+* View enrolled courses
+* Check grades & attendance
+* Download grade report (PDF)
+* Update profile
+
+---
+
+### 👨‍👩‍👧 Parent
+
+* Monitor student performance
+* View grades & attendance
+* Track academic progress
+
+---
+
+## 🛠 Tech Stack
+
+###  Backend
 
 * Python
 * FastAPI
 * SQLAlchemy
-* SQLite
+* PostgreSQL (Production)
+* SQLite (Local Development)
 * JWT Authentication
 
-### Frontend
+---
+
+###  Frontend
 
 * HTML
 * CSS
 * JavaScript
+
+---
+
+### ☁️ Deployment
+
+* Backend: Render
+* Frontend: Vercel
+* Database: PostgreSQL (Render)
 
 ---
 
@@ -97,81 +115,115 @@ frontend/
 
 ##  Installation & Setup
 
-### 1️ Clone Repository
+### Clone Repository
 
-```
+```bash
 git clone https://github.com/YOUR_USERNAME/student-management-system.git
 cd student-management-system
 ```
 
-### 2️⃣ Create Virtual Environment
+---
 
-```
+###  Create Virtual Environment
+
+```bash
 python -m venv .venv
 ```
 
 Activate:
 
-```
-.venv\Scripts\activate   (Windows)
+```bash
+.venv\Scripts\activate   # Windows
 ```
 
-### 3️⃣ Install Dependencies
+---
 
-```
+###  Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Run Backend
+---
 
+###  Configure Environment Variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL=sqlite:///./student_management.db
 ```
+
+---
+
+###  Run Backend
+
+```bash
 uvicorn app.main:app --reload
 ```
 
-### 5️⃣ Run Frontend
+---
+
+###  Run Frontend
 
 Open:
 
-```
+```text
 frontend/login.html
 ```
 
 ---
 
-##  Default Roles
-
-* Admin
-* Teacher
-* Student
-* Parent
-
----
-
 ##  API Documentation
 
-After running backend:
+Available at:
 
-```
+```text
 http://127.0.0.1:8000/docs
 ```
 
 ---
 
+##  Production Setup
+
+* Uses **PostgreSQL database**
+* Environment variables configured via Render
+* Fully deployed backend & frontend
+
+---
+
+##  Security Notes
+
+* Passwords are hashed using bcrypt
+* JWT tokens used for authentication
+* Sensitive data stored in environment variables
+
+---
+
 ##  Future Improvements
 
-* Dashboard analytics (charts)
-* Role-based UI enhancements
-* Email notifications
-* Deployment on cloud
+* 📊 Dashboard analytics (charts & insights)
+* 🔐 Role-based UI restrictions
+* 📧 Email notifications
+* 📱 Mobile responsiveness improvements
+* 🛡️ Advanced security (RBAC middleware)
 
 ---
 
-##  Author
+## 👨‍💻 Author
 
-Elijah M. Flomo
+**Elijah M. Flomo**
 
 ---
 
-##  Notes
+## ⭐ Project Highlights
 
-This project demonstrates a complete **role-based full-stack system** similar to real university portals.
+* Full-stack architecture
+* RESTful API design
+* Role-based system
+* Cloud deployment (Render + Vercel)
+* Real database integration (PostgreSQL)
+
+---
+
+
