@@ -74,12 +74,21 @@ from fastapi import HTTPException
 
 @app.delete("/debug/users/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id).first()
 
+    # 1 Delete related student
+    student = db.query(Student).filter(Student.user_id == user_id).first()
+    if student:
+        db.delete(student)
+
+    # 2 Find user
+    user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # 3 Delete user
     db.delete(user)
+
+    # 4 Commit
     db.commit()
 
     return {"message": f"User {user_id} deleted successfully"}
