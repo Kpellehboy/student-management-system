@@ -118,7 +118,7 @@ frontend/
 ### Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/student-management-system.git
+git clone https://github.com/Kpellehboy/student-management-system.git
 cd student-management-system
 ```
 
