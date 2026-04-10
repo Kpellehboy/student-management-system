@@ -1,13 +1,19 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# SQLite database URL
-DATABASE_URL = "sqlite:///./student_management.db"
+# Get DATABASE_URL from environment (Render)
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Create database engine
+# Fix for Render (sometimes gives postgres:// instead of postgresql://)
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Create engine
 engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
+    DATABASE_URL,
+    pool_pre_ping=True  # helps avoid connection issues
 )
 
 # Create session
@@ -19,7 +25,6 @@ SessionLocal = sessionmaker(
 
 # Base class for models
 Base = declarative_base()
-
 
 # Dependency to get DB session
 def get_db():
