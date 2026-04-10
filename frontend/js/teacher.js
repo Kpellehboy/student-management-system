@@ -3,7 +3,7 @@ const token = localStorage.getItem("token");
 
 function logout() {
     localStorage.clear();
-    window.location.href = "login.html";
+    window.location.href = "index.html";
 }
 
 async function loadDashboard() {
