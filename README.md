@@ -13,6 +13,8 @@ The system supports multiple roles: **Admin, Teacher, Student, and Parent**.
 
 * User Registration & Login (JWT-based)
 * Role-based access control
+  <img width="1366" height="697" alt="image" src="https://github.com/user-attachments/assets/9c89bc7a-8840-42a2-850b-6a359dccd3c7" />
+
 
 ###  Admin
 
@@ -20,6 +22,8 @@ The system supports multiple roles: **Admin, Teacher, Student, and Parent**.
 * Assign Teachers to Courses
 * Enroll Students into Courses
 * Manage Students & Teachers
+  <img width="1366" height="696" alt="image" src="https://github.com/user-attachments/assets/59ae624f-a4e2-463f-9d76-54598052ccc9" />
+
 
 ###  Teacher
 
@@ -27,6 +31,8 @@ The system supports multiple roles: **Admin, Teacher, Student, and Parent**.
 * Add Attendance
 * Add Grades
 * Create Assignments
+  <img width="1362" height="691" alt="image" src="https://github.com/user-attachments/assets/4d3da5ef-7c6c-428b-a2bb-be666ca21d2c" />
+
 
 ###  Student
 
@@ -35,12 +41,16 @@ The system supports multiple roles: **Admin, Teacher, Student, and Parent**.
 * View Attendance
 * Download Grade Report (PDF)
 * Update Profile
+  <img width="1366" height="687" alt="image" src="https://github.com/user-attachments/assets/52fd0bfa-6bc5-41b1-8d4f-522553725896" />
+
 
 ###  Parent
 
 * View Child Grades
 * View Child Attendance
 * Track Student Progress
+  <img width="1355" height="687" alt="image" src="https://github.com/user-attachments/assets/8b8c03f9-49ed-4986-9f04-f0d0bbc0b696" />
+
 
 ---
 
