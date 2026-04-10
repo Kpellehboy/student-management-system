@@ -1,4 +1,4 @@
-const API = "https://student-management-system-df8x.onrender.com";
+const API = "https://student-management-system-xge8.onrender.com";
 
 // ---------------- UI SWITCH ----------------
 function showLogin() {
