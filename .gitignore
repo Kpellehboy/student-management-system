@@ -1,8 +1,9 @@
 @"
 # Virtual environment
 .venv/
-env/
-sqlite3.exe/
+*.db
+*.exe
+.env
 
 # Python cache
 __pycache__/
