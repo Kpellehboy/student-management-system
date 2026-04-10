@@ -2,6 +2,7 @@
 # Virtual environment
 .venv/
 env/
+sqlite3.exe/
 
 # Python cache
 __pycache__/
