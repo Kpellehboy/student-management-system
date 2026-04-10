@@ -11,8 +11,8 @@ Designed to simulate a real-world **university management portal**.
 
 ##  Live Demo
 
-* 🔗 Frontend: https://student-management-system-snowy-omega.vercel.app/
-* 🔗 Backend API: https://student-management-system-xge8.onrender.com/
+* 🔗 URL: https://student-management-system-snowy-omega.vercel.app/
+  
 
 ---
 
