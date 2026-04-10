@@ -26,10 +26,11 @@ origins = [
     "http://localhost:3000",
 ]
 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,   # safer than "*"
-    allow_credentials=True,
+    allow_origins=["*"],   # allow all origins
+    allow_credentials=False,  # IMPORTANT: must be False when using "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )
