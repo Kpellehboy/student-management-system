@@ -1,32 +1,31 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # 👈 ADD THIS
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Get DATABASE_URL from environment (Render)
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Fix for Render (sometimes gives postgres:// instead of postgresql://)
+# Fix for Render PostgreSQL
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Create engine
 engine = create_engine(
     DATABASE_URL,
-    pool_pre_ping=True  # helps avoid connection issues
+    pool_pre_ping=True
 )
 
-# Create session
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine
 )
 
-# Base class for models
 Base = declarative_base()
 
-# Dependency to get DB session
 def get_db():
     db = SessionLocal()
     try:
