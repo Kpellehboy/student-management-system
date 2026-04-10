@@ -1,6 +1,6 @@
 console.log("Student JS Loaded 🚀");
 
-const API = "http://127.0.0.1:8000";
+const API = "https://student-management-system-df8x.onrender.com";
 
 // ---------------- GLOBAL LOGOUT ----------------
 window.logout = function () {
