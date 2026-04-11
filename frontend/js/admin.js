@@ -1,7 +1,6 @@
 const API = "https://student-management-system-xge8.onrender.com";
 const token = localStorage.getItem("access_token");
 
-// Redirect to login if no token
 if (!token) {
     window.location.href = "./index.html";
 }
@@ -11,7 +10,6 @@ function logout() {
     window.location.href = "./index.html";
 }
 
-// ---------- Course Management ----------
 async function createCourse() {
     const name = document.getElementById("course_name").value;
     const res = await fetch(`${API}/admin/create-course?course_name=${name}`, {
@@ -20,6 +18,7 @@ async function createCourse() {
     });
     const data = await res.json();
     alert(JSON.stringify(data));
+    getCourses();
 }
 
 async function assignTeacher() {
@@ -42,7 +41,6 @@ async function enrollStudent() {
     });
     const data = await res.json();
     alert(JSON.stringify(data));
-    if (document.getElementById("output").innerHTML.includes("Student")) getStudents();
 }
 
 async function assignParent() {
@@ -56,52 +54,46 @@ async function assignParent() {
     alert(JSON.stringify(data));
 }
 
-// ---------- View Functions ----------
 async function getStudents() {
-    fetchData(`/admin/students?_=${Date.now()}`, 'students');
+    fetchData('/admin/students', 'students');
 }
 async function getTeachers() {
-    fetchData(`/admin/teachers?_=${Date.now()}`, 'teachers');
+    fetchData('/admin/teachers', 'teachers');
 }
 async function getCourses() {
-    fetchData(`/admin/courses?_=${Date.now()}`, 'courses');
+    fetchData('/admin/courses', 'courses');
 }
 async function getUsers() {
-    fetchData(`/admin/users?_=${Date.now()}`, 'users');
+    fetchData('/admin/users', 'users');
 }
 
-// ---------- Generic Fetch with type ----------
-async function fetchData(endpoint, endpointType = '') {
+async function fetchData(endpoint, type) {
     try {
-        const res = await fetch(`${API}${endpoint}`, {
+        const res = await fetch(`${API}${endpoint}?_=${Date.now()}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
-        if (!res.ok) throw new Error("API Error: " + res.status);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        renderTable(data, endpointType);
+        renderTable(data, type);
     } catch (err) {
-        document.getElementById("output").innerHTML = `<p style="color:red;">${err.message}</p>`;
+        document.getElementById("output").innerHTML = `<p class="message error">${err.message}</p>`;
     }
 }
 
-// ---------- Enhanced Table Render with Action Buttons ----------
-function renderTable(data, endpointType = '') {
+function renderTable(data, type) {
     const container = document.getElementById("output");
     if (!data || data.length === 0) {
         container.innerHTML = "<p>No Data Available</p>";
         return;
     }
-
     let html = `<table class="data-table"><thead><tr>`;
-    // Headers
     Object.keys(data[0]).forEach(key => {
         html += `<th>${key.replace(/_/g, " ").toUpperCase()}</th>`;
     });
-    // Add Actions column for user list
-    if (endpointType === 'users') {
+    if (type === 'users') {
         html += `<th>ACTIONS</th>`;
     }
-    html += `</tr></thead><tbody>`;
+    html += `</td></thead><tbody>`;
 
     data.forEach(row => {
         html += "<tr>";
@@ -109,11 +101,10 @@ function renderTable(data, endpointType = '') {
             let display = (value === null || value === undefined) ? "—" : value;
             html += `<td>${display}</td>`;
         });
-        // Add action buttons for each user
-        if (endpointType === 'users' && row.id) {
+        if (type === 'users' && row.id) {
             html += `<td>
-                <button onclick="updateUser(${row.id})" style="background:#3b82f6; color:white; border:none; padding:4px 8px; margin-right:4px; border-radius:6px;">✏️ Edit</button>
-                <button onclick="deleteUser(${row.id})" style="background:#ef4444; color:white; border:none; padding:4px 8px; border-radius:6px;">🗑️ Delete</button>
+                <button onclick="updateUser(${row.id})" style="background:#3b82f6; padding:4px 8px; margin-right:4px;">✏️ Edit</button>
+                <button onclick="deleteUser(${row.id})" style="background:#ef4444; padding:4px 8px;">🗑️ Delete</button>
             </td>`;
         }
         html += "</tr>";
@@ -122,7 +113,6 @@ function renderTable(data, endpointType = '') {
     container.innerHTML = html;
 }
 
-// ---------- User CRUD Operations ----------
 async function updateUser(userId) {
     const newName = prompt("Enter new name:");
     if (!newName) return;
@@ -141,21 +131,20 @@ async function updateUser(userId) {
     });
     const data = await res.json();
     alert(JSON.stringify(data));
-    getUsers(); // refresh list
+    getUsers();
 }
 
 async function deleteUser(userId) {
-    if (!confirm("Are you sure you want to delete this user?")) return;
+    if (!confirm("Delete user permanently?")) return;
     const res = await fetch(`${API}/admin/users/${userId}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
     });
     const data = await res.json();
     alert(data.message);
-    getUsers(); // refresh list
+    getUsers();
 }
 
-// ---------- UI Helpers ----------
 function showSection(sectionId) {
     const sections = ["createCourse", "assignTeacher", "enrollStudent", "assignParent"];
     sections.forEach(id => {
@@ -166,16 +155,16 @@ function showSection(sectionId) {
     if (target) target.style.display = "block";
 }
 
-// ---------- Expose to Global Scope ----------
+// Expose functions globally
 window.getStudents = getStudents;
 window.getTeachers = getTeachers;
 window.getCourses = getCourses;
+window.getUsers = getUsers;
 window.createCourse = createCourse;
 window.assignTeacher = assignTeacher;
 window.enrollStudent = enrollStudent;
 window.assignParent = assignParent;
-window.logout = logout;
-window.showSection = showSection;
-window.getUsers = getUsers;
 window.updateUser = updateUser;
 window.deleteUser = deleteUser;
+window.logout = logout;
+window.showSection = showSection;
