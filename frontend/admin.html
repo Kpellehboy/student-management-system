@@ -133,6 +133,7 @@
         <button onclick="getTeachers()">👩‍🏫 View Teachers</button>
         <button onclick="getCourses()">📚 View Courses</button>
         <button onclick="getUsers()">👥 List All Users</button>
+        <button onclick="showSection('createUser')">➕ Create User</button>
         <button onclick="logout()">🚪 Logout</button>
     </div>
 
@@ -162,6 +163,20 @@
                     <input id="student_id_p" placeholder="Student ID">
                     <input id="parent_id" placeholder="Parent ID">
                     <button onclick="assignParent()">Assign</button>
+                </div>
+                <!-- NEW: Create User Form -->
+                <div id="createUser" class="card" style="display:none;">
+                    <h3>➕ Create New User</h3>
+                    <input id="new_name" placeholder="Full Name">
+                    <input id="new_email" placeholder="Email Address">
+                    <input id="new_password" placeholder="Temporary Password">
+                    <select id="new_role">
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="parent">Parent</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button onclick="createUser()">Create User</button>
                 </div>
             </div>
 

@@ -145,8 +145,41 @@ async function deleteUser(userId) {
     getUsers();
 }
 
+// NEW: Create User function
+async function createUser() {
+    const name = document.getElementById("new_name").value;
+    const email = document.getElementById("new_email").value;
+    const password = document.getElementById("new_password").value;
+    const role = document.getElementById("new_role").value;
+
+    if (!name || !email || !password) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const res = await fetch(`${API}/auth/admin/users`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ name, email, password, role, course_id: null, parent_id: null })
+    });
+    const data = await res.json();
+    if (res.ok) {
+        alert(`User "${data.name}" created successfully`);
+        document.getElementById("new_name").value = "";
+        document.getElementById("new_email").value = "";
+        document.getElementById("new_password").value = "";
+        getUsers(); // refresh user list if visible
+    } else {
+        alert(data.detail || "Creation failed");
+    }
+}
+
+// Updated showSection to include 'createUser'
 function showSection(sectionId) {
-    const sections = ["createCourse", "assignTeacher", "enrollStudent", "assignParent"];
+    const sections = ["createCourse", "assignTeacher", "enrollStudent", "assignParent", "createUser"];
     sections.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = "none";
@@ -166,5 +199,6 @@ window.enrollStudent = enrollStudent;
 window.assignParent = assignParent;
 window.updateUser = updateUser;
 window.deleteUser = deleteUser;
+window.createUser = createUser;
 window.logout = logout;
 window.showSection = showSection;
