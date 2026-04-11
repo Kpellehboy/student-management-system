@@ -1,17 +1,73 @@
-@"
 # Virtual environment
+venv/
 .venv/
-*.db
-*.exe
-.env
+env/
+.env/
+ENV/
 
 # Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
-# VS Code
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+test.db
+student_management.db
+
+# Environment variables
+.env
+.flaskenv
+
+# Secrets and keys
+*.pem
+*.key
+secrets.json
+config.local.*
+
+# Logs
+*.log
+logs/
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+.coverage.xml
+
+# Build and distribution
+dist/
+build/
+*.egg-info/
+*.egg
+
+# IDE files
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # OS files
 .DS_Store
-"@ > .gitignore
+Thumbs.db
+desktop.ini
+
+# Frontend (if any build artifacts)
+frontend/node_modules/
+frontend/package-lock.json
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Render specific (local overrides)
+render.yaml
+*.render.yaml
+
+# Exe files (already listed)
+*.exe
