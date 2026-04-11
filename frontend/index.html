@@ -52,7 +52,7 @@
             text-align: center;
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 0.9rem 1rem;
             margin: 0.6rem 0;
@@ -64,7 +64,7 @@
             font-family: inherit;
         }
 
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
@@ -91,20 +91,6 @@
             box-shadow: 0 10px 20px -5px rgba(102, 126, 234, 0.4);
         }
 
-        .switch {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: #64748b;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .switch:hover {
-            color: #667eea;
-            text-decoration: underline;
-        }
-
         #msg {
             margin-top: 1rem;
             text-align: center;
@@ -113,14 +99,6 @@
             border-radius: 12px;
             background: #f1f5f9;
             color: #1e293b;
-        }
-
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1rem;
         }
 
         @media (max-width: 500px) {
@@ -138,29 +116,12 @@
 <div class="container">
     <h2>📚 Student Management</h2>
 
-    <!-- LOGIN (visible first) -->
+    <!-- LOGIN ONLY -->
     <div id="loginBox">
         <h3>Welcome Back</h3>
         <input type="email" id="email" placeholder="Email Address">
         <input type="password" id="password" placeholder="Password">
         <button onclick="login()">Login →</button>
-        <p class="switch" onclick="showRegister()">Create new account</p>
-    </div>
-
-    <!-- REGISTER (hidden initially) -->
-    <div id="registerBox" style="display:none;">
-        <h3>Create Account</h3>
-        <input type="text" id="r_name" placeholder="Full Name">
-        <input type="email" id="r_email" placeholder="Email Address">
-        <input type="password" id="r_password" placeholder="Password">
-        <select id="r_role">
-            <option value="student">👩‍🎓 Student</option>
-            <option value="teacher">👨‍🏫 Teacher</option>
-            <option value="parent">👪 Parent</option>
-            <!-- <option value="admin">⚙️ Admin</option> -->
-        </select>
-        <button onclick="register()">Register →</button>
-        <p class="switch" onclick="showLogin()">Already have an account? Login</p>
     </div>
 
     <div id="msg"></div>

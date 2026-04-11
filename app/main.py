@@ -25,7 +25,7 @@ app = FastAPI(
     title="Student Management System API"
 )
 
-# ✅ CORS
+#  CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -38,13 +38,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ✅ Create tables
+#  Create tables
 Base.metadata.create_all(bind=engine)
 
-# ✅ Static files
+#  Static files
 app.mount("/frontend", StaticFiles(directory="frontend"), name="frontend")
 
-# ✅ Register routes
+#  Register routes
 app.include_router(admin.router, prefix="/admin", tags=["Admin"])
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(student.router, prefix="/student", tags=["Student"])
@@ -52,43 +52,7 @@ app.include_router(teacher.router, prefix="/teacher", tags=["Teacher"])
 app.include_router(parent.router, prefix="/parent", tags=["Parent"])
 
 
-# ✅ Health check
+#  Health check
 @app.get("/")
 def home():
     return {"message": "Student Management System API is running"}
-
-
-# 🔥 DEBUG ROUTES (VIEW DATA)
-
-@app.get("/debug/users")
-def get_users(db: Session = Depends(get_db)):
-    return db.query(User).all()
-
-
-@app.get("/debug/students")
-def get_students(db: Session = Depends(get_db)):
-    return db.query(Student).all()
-
-
-from fastapi import HTTPException
-
-@app.delete("/debug/users/{user_id}")
-def delete_user(user_id: int, db: Session = Depends(get_db)):
-
-    # 1 Delete related student
-    student = db.query(Student).filter(Student.user_id == user_id).first()
-    if student:
-        db.delete(student)
-
-    # 2 Find user
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    # 3 Delete user
-    db.delete(user)
-
-    # 4 Commit
-    db.commit()
-
-    return {"message": f"User {user_id} deleted successfully"}

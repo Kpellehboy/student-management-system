@@ -11,26 +11,22 @@ from app.utils.auth import require_role
 router = APIRouter()
 
 
-# Create Course
-# -----------------------------
+# ------------------------------------------------
+# Course Management (existing)
+# ------------------------------------------------
 @router.post("/create-course", status_code=status.HTTP_201_CREATED)
 def create_course(
     course_name: str,
     db: Session = Depends(get_db),
     _: User = Depends(require_role("admin"))
 ):
-    # Check duplicate course
     existing = db.query(Course).filter(Course.course_name == course_name).first()
-
     if existing:
         raise HTTPException(status_code=400, detail="Course already exists")
-
     new_course = Course(course_name=course_name)
-
     db.add(new_course)
     db.commit()
     db.refresh(new_course)
-
     return {
         "message": "Course created successfully",
         "course_id": new_course.id,
@@ -38,9 +34,6 @@ def create_course(
     }
 
 
-
-# Assign Teacher to Course
-# -----------------------------
 @router.post("/assign-teacher")
 def assign_teacher(
     teacher_id: int,
@@ -49,18 +42,13 @@ def assign_teacher(
     _: User = Depends(require_role("admin"))
 ):
     course = db.query(Course).filter(Course.id == course_id).first()
-
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
-
     teacher = db.query(Teacher).filter(Teacher.id == teacher_id).first()
-
     if not teacher:
         raise HTTPException(status_code=404, detail="Teacher not found")
-
     course.teacher_id = teacher.id
     db.commit()
-
     return {
         "message": "Teacher assigned successfully",
         "course_id": course.id,
@@ -68,88 +56,60 @@ def assign_teacher(
     }
 
 
-# Enroll Student to Course
-# -----------------------------
-# router/admin.py (only the enroll_student part is changed – rest unchanged)
-
 @router.post("/enroll-student")
 def enroll_student(
     student_id: int,
     course_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role("admin"))
+    _: User = Depends(require_role("admin"))
 ):
     student = db.query(Student).filter(Student.id == student_id).first()
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")
-
     course = db.query(Course).filter(Course.id == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
-
-    #  student's direct course_id (for teacher view & admin view)
     student.course_id = course.id
-
-    # Keep the Enrollment record (optional, for future many-to-many)
     from app.models.enrollment import Enrollment
     enrollment = Enrollment(student_id=student.id, course_id=course.id)
     db.add(enrollment)
-
     db.commit()
-
     return {"message": "Student enrolled successfully", "course_id": course.id}
 
 
-# View All Students
-# -----------------------------
 @router.get("/students")
 def get_students(
     db: Session = Depends(get_db),
     _: User = Depends(require_role("admin"))
 ):
     students = db.query(Student).all()
-
     if not students:
         return {"message": "No students found"}
-
     return students
 
 
-
-# View All Teachers
-# -----------------------------
 @router.get("/teachers")
 def get_teachers(
     db: Session = Depends(get_db),
     _: User = Depends(require_role("admin"))
 ):
     teachers = db.query(Teacher).all()
-
     if not teachers:
         return {"message": "No teachers found"}
-
     return teachers
 
 
-
-# View All Courses
-# -----------------------------
 @router.get("/courses")
 def get_courses(
     db: Session = Depends(get_db),
     _: User = Depends(require_role("admin"))
 ):
     courses = db.query(Course).all()
-
     if not courses:
         return {"message": "No courses found"}
-
     return courses
 
 
-
-# Assign Parent to Student
-# -----------------------------
 @router.post("/assign-parent")
 def assign_parent(
     student_id: int,
@@ -157,22 +117,85 @@ def assign_parent(
     db: Session = Depends(get_db),
     _: User = Depends(require_role("admin"))
 ):
-
     student = db.query(Student).filter(Student.id == student_id).first()
-
     if not student:
         raise HTTPException(status_code=404, detail="Student not found")
-
     parent = db.query(User).filter(User.id == parent_id).first()
-
     if not parent or parent.role != "parent":
         raise HTTPException(status_code=400, detail="Invalid parent user")
-
     student.parent_id = parent.id
     db.commit()
-
     return {
         "message": "Parent assigned successfully",
         "student_id": student.id,
         "parent_id": parent.id
     }
+
+
+# ------------------------------------------------
+# User Management (CRUD for admin)
+# ------------------------------------------------
+@router.get("/users")
+def get_all_users(
+    db: Session = Depends(get_db),
+    _: User = Depends(require_role("admin"))
+):
+    """Get all users (admin only)"""
+    users = db.query(User).all()
+    return users
+
+
+@router.put("/users/{user_id}")
+def update_user(
+    user_id: int,
+    user_update: dict,  # expects {"name": "...", "email": "...", "role": "..."}
+    db: Session = Depends(get_db),
+    _: User = Depends(require_role("admin"))
+):
+    """Update user details (admin only)"""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    if "name" in user_update:
+        user.name = user_update["name"]
+    if "email" in user_update:
+        existing = db.query(User).filter(User.email == user_update["email"]).first()
+        if existing and existing.id != user_id:
+            raise HTTPException(status_code=400, detail="Email already in use")
+        user.email = user_update["email"]
+    if "role" in user_update:
+        if user_update["role"] not in ["admin", "student", "teacher", "parent"]:
+            raise HTTPException(status_code=400, detail="Invalid role")
+        user.role = user_update["role"]
+    
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+@router.delete("/users/{user_id}")
+def delete_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    _: User = Depends(require_role("admin"))
+):
+    """Delete a user and associated profile (admin only)"""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Delete related profile based on role
+    if user.role == "student":
+        student = db.query(Student).filter(Student.user_id == user.id).first()
+        if student:
+            db.delete(student)
+    elif user.role == "teacher":
+        teacher = db.query(Teacher).filter(Teacher.user_id == user.id).first()
+        if teacher:
+            db.delete(teacher)
+    # Parent has no separate table; add if needed
+
+    db.delete(user)
+    db.commit()
+    return {"message": f"User {user_id} deleted successfully"}
